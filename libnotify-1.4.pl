@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # libnotify.pl for X-Chat, by s0ulslack (Tony Annen)
 # Distributed under the terms of the GNU General Public License, v2 or later
-# $Header: ~/.xchat2/libnotify.pl, v1.3 2009/04/17 10:21:00 $
+# $Header: ~/.xchat2/libnotify.pl, v1.4 2018/03/18 10:21:00 $
 # Need help? /msg s0ulslack on Freenode
 
 # uses notification-daemon/libnotify to display queries, nick highlights,
@@ -59,7 +59,7 @@ if(-e "/sbin/notify-send"){
   $ns="/usr/bin/notify-send";
 }
 if(!$ns){
-  IRC::print("libnotify-1.2.pl not loaded!\nYou must have libnotify installed.");
+  IRC::print("libnotify-1.4.pl not loaded!\nYou must have libnotify installed.");
   return 0;
 }
 $ns = "-t 5000 -a xchat -i xchat ";

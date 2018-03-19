@@ -4,13 +4,15 @@ local TAB_NAME = '(highlights)'
 local OPEN_PER_SERVER = true
 local EXTRA_HIGHLIGHTS = {
     'ping dhill',
-    'NEW COLLAB CASE.*[Stack]',
-    'NEW NCQ CASE.*[Stack]',
-    'NEW NNO CASE.*[Stack]',
     'ping sbr-stack',
+    'ping highrollers',
+    'ping highroller',
     'ping vz-eoss',
     'ping sprint-eoss',
     'ping stack-seg',
+    'NEW COLLAB CASE.*[Stack]',
+    'NEW NCQ CASE.*[Stack]',
+    'NEW NNO CASE.*[Stack]'
 }
 
 local function find_highlighttab ()

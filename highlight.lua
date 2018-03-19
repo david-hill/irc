@@ -3,7 +3,7 @@ hexchat.register('extra-highlights', '1', 'Support highlights with spaces in the
 local TAB_NAME = '(highlights)'
 local OPEN_PER_SERVER = true
 local EXTRA_HIGHLIGHTS = {
-    'ping dhill',
+    'dhill',
     'ping sbr-stack',
     'ping highrollers',
     'ping highroller',
@@ -52,7 +52,7 @@ local function on_message (args, event_type)
             hexchat.emit_print(event_type, unpack(args))
             hexchat.command('gui color 3')
 	          highlight_context:print(string.format(format, channel, args[3] or '', args[4] or '', hexchat.strip(args[1]), args[2]))
-	          highlight_context:command('gui color 0') -- Ignore colors
+	          highlight_context:command('gui color 3')
             return hexchat.EAT_ALL
         end
     end

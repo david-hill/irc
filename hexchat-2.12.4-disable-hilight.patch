@@ -1,0 +1,26 @@
+--- a/src/common/inbound.c	2018-03-20 14:56:06.432913689 -0400
++++ b/src/common/inbound.c	2018-03-20 14:56:18.675962399 -0400
+@@ -307,22 +307,6 @@
+ 	if (alert_match_word (from, prefs.hex_irc_no_hilight))
+ 		return 0;
+ 
+-	text = strip_color (text, -1, STRIP_ALL);
+-
+-	if (alert_match_text (text, serv->nick) ||
+-		 alert_match_text (text, prefs.hex_irc_extra_hilight) ||
+-		 alert_match_word (from, prefs.hex_irc_nick_hilight))
+-	{
+-		g_free (text);
+-		if (sess != current_tab)
+-		{
+-			sess->tab_state |= TAB_STATE_NEW_HILIGHT;
+-			lastact_update (sess);
+-		}
+-		return 1;
+-	}
+-
+-	g_free (text);
+ 	return 0;
+ }
+ 
+

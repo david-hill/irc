@@ -1,0 +1,62 @@
+--- a/src/common/inbound.c 2018-03-20 14:56:06.432913689 -0400
++++ b/src/common/inbound.c 2018-03-20 15:24:18.709464946 -0400
+@@ -307,22 +307,25 @@
+ 	if (alert_match_word (from, prefs.hex_irc_no_hilight))
+ 		return 0;
+ 
+-	text = strip_color (text, -1, STRIP_ALL);
++  if (prefs.hex_irc_disable_hilight)
++  {
++	  text = strip_color (text, -1, STRIP_ALL);
+ 
+-	if (alert_match_text (text, serv->nick) ||
+-		 alert_match_text (text, prefs.hex_irc_extra_hilight) ||
+-		 alert_match_word (from, prefs.hex_irc_nick_hilight))
+-	{
+-		g_free (text);
+-		if (sess != current_tab)
+-		{
+-			sess->tab_state |= TAB_STATE_NEW_HILIGHT;
+-			lastact_update (sess);
+-		}
+-		return 1;
+-	}
++	  if (alert_match_text (text, serv->nick) ||
++	  	 alert_match_text (text, prefs.hex_irc_extra_hilight) ||
++	  	 alert_match_word (from, prefs.hex_irc_nick_hilight))
++	  {
++	  	g_free (text);
++	  	if (sess != current_tab)
++	  	{
++	  		sess->tab_state |= TAB_STATE_NEW_HILIGHT;
++	  		lastact_update (sess);
++	  	}
++	  	return 1;
++	  }
+ 
+-	g_free (text);
++	  g_free (text);
++  }
+ 	return 0;
+ }
+ 
+--- a/src/common/cfgfiles.c	2018-03-20 15:20:59.096700636 -0400
++++ b/src/common/cfgfiles.c	2018-03-20 15:22:47.676116383 -0400
+@@ -499,6 +499,7 @@
+ 	{"irc_ban_type", P_OFFINT (hex_irc_ban_type), TYPE_INT},
+ 	{"irc_cap_server_time", P_OFFINT (hex_irc_cap_server_time), TYPE_BOOL},
+ 	{"irc_conf_mode", P_OFFINT (hex_irc_conf_mode), TYPE_BOOL},
++	{"irc_disable_hilight", P_OFFINT (hex_irc_disable_hilight), TYPE_BOOL},
+ 	{"irc_extra_hilight", P_OFFSET (hex_irc_extra_hilight), TYPE_STR},
+ 	{"irc_hide_nickchange", P_OFFINT (hex_irc_hide_nickchange), TYPE_BOOL},
+ 	{"irc_hide_version", P_OFFINT (hex_irc_hide_version), TYPE_BOOL},
+--- a/src/common/hexchat.h.orig	2018-03-20 15:21:10.097742759 -0400
++++ b/src/common/hexchat.h	2018-03-20 15:23:14.277218237 -0400
+@@ -178,6 +178,7 @@
+ 	unsigned int hex_irc_logging;
+ 	unsigned int hex_irc_raw_modes;
+ 	unsigned int hex_irc_servernotice;
++	unsigned int hex_irc_disable_hilight;
+ 	unsigned int hex_irc_skip_motd;
+ 	unsigned int hex_irc_wallops;
+ 	unsigned int hex_irc_who_join;

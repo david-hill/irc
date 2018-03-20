@@ -1,7 +1,7 @@
 Summary:   A popular and easy to use graphical IRC (chat) client
 Name:      hexchat
 Version:   2.12.4
-Release:   12%{?dist}
+Release:   13%{?dist}
 Group:     Applications/Internet
 License:   GPLv2+
 URL:       https://hexchat.github.io
@@ -9,7 +9,7 @@ Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}-repack.tar.xz
 # https://github.com/hexchat/hexchat/issues/2013
 Patch1:    hexchat-2.12.4-disable-lang-c.patch
 Patch2:    https://github.com/hexchat/hexchat/commit/d3f1ab78138a1f9256ec02842799ed6cd1e3ec1e.patch
-Patch3:    hexchat-2.12.4-disable-hilight.patch
+Patch3:    hexchat-2.12.4-disable-hilight-ng.patch
 
 BuildRequires: intltool, libtool
 BuildRequires: desktop-file-utils, hicolor-icon-theme, sound-theme-freedesktop

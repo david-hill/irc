@@ -1,28 +1,27 @@
+%global app_id io.github.Hexchat
+
 Summary:   A popular and easy to use graphical IRC (chat) client
 Name:      hexchat
-Version:   2.12.4
-Release:   13%{?dist}
+Version:   2.14.1
+Release:   2%{?dist}
 Group:     Applications/Internet
 License:   GPLv2+
 URL:       https://hexchat.github.io
-Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}-repack.tar.xz
-# https://github.com/hexchat/hexchat/issues/2013
-Patch1:    hexchat-2.12.4-disable-lang-c.patch
-Patch2:    https://github.com/hexchat/hexchat/commit/d3f1ab78138a1f9256ec02842799ed6cd1e3ec1e.patch
-Patch3:    hexchat-2.12.4-disable-hilight-ng.patch
+Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}.tar.xz
+Patch1:    hexchat-2.12.4-disable-hilight-ng.patch
 
-BuildRequires: intltool, libtool
+BuildRequires: meson
 BuildRequires: desktop-file-utils, hicolor-icon-theme, sound-theme-freedesktop
 BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(gtk+-2.0)
 BuildRequires: pkgconfig(dbus-glib-1)
 BuildRequires: pkgconfig(libcanberra)
 BuildRequires: pkgconfig(libnotify)
-#BuildRequires: pkgconfig(libproxy-1.0)
+BuildRequires: pkgconfig(libproxy-1.0)
 BuildRequires: pkgconfig(iso-codes)
 BuildRequires: pkgconfig(openssl)
 BuildRequires: pkgconfig(python3)
-#BuildRequires: pkgconfig(libpci)
+BuildRequires: pkgconfig(libpci)
 # Disable luajit on aarch64 for the time being due to issues
 # Upstream: https://github.com/hexchat/hexchat/issues/2116
 %ifarch %{arm} %{ix86} x86_64
@@ -49,14 +48,15 @@ This package contains the development files for %{name}.
 %autosetup -p1
 
 %build
-%configure --enable-python=python3
-%make_build
+%ifarch %{arm} %{ix86} x86_64
+%meson
+%else
+%meson -Dwith-lua=lua
+%endif
+%meson_build
 
 %install
-%make_install
-
-# Get rid of libtool archives
-find %{buildroot} -name '*.la' -exec rm -f {} ';'
+%meson_install
 
 %find_lang %{name}
 
@@ -81,12 +81,12 @@ fi
 %{_libdir}/hexchat/plugins/checksum.so
 %{_libdir}/hexchat/plugins/fishlim.so
 %{_libdir}/hexchat/plugins/lua.so
-#%{_libdir}/hexchat/plugins/sysinfo.so
+%{_libdir}/hexchat/plugins/sysinfo.so
 %{_libdir}/hexchat/plugins/perl.so
 %{_libdir}/hexchat/plugins/python.so
-%{_datadir}/applications/hexchat.desktop
+%{_datadir}/applications/%{app_id}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.*
-%{_datadir}/appdata/hexchat.appdata.xml
+%{_datadir}/metainfo/%{app_id}.appdata.xml
 %{_datadir}/dbus-1/services/org.hexchat.service.service
 %{_mandir}/man1/*.gz
 
@@ -95,6 +95,15 @@ fi
 %{_libdir}/pkgconfig/hexchat-plugin.pc
 
 %changelog
+* Tue Mar 20 2018 David Hill <dhill@redhat.com> 2.14.1-2
+- Version bump to 2.14.1
+
+* Sat Mar 14 2018 Patrick Griffis <tingping@fedoraproject.org> 2.14.1-1
+- Version bump to 2.14.1
+
+* Sat Mar 10 2018 Patrick Griffis <tingping@fedoraproject.org> 2.14.0-1
+- Version bump to 2.14.0
+
 * Thu Feb 08 2018 Patrick Griffis <tingping@fedoraproject.org> 2.12.4-11
 - Add patch fixing rendering issue: https://bugzilla.redhat.com/show_bug.cgi?id=1536298
 

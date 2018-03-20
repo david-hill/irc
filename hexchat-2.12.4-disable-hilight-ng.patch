@@ -50,7 +50,7 @@
  	{"irc_extra_hilight", P_OFFSET (hex_irc_extra_hilight), TYPE_STR},
  	{"irc_hide_nickchange", P_OFFINT (hex_irc_hide_nickchange), TYPE_BOOL},
  	{"irc_hide_version", P_OFFINT (hex_irc_hide_version), TYPE_BOOL},
---- a/src/common/hexchat.h.orig	2018-03-20 15:21:10.097742759 -0400
+--- a/src/common/hexchat.h	2018-03-20 15:21:10.097742759 -0400
 +++ b/src/common/hexchat.h	2018-03-20 15:23:14.277218237 -0400
 @@ -178,6 +178,7 @@
  	unsigned int hex_irc_logging;

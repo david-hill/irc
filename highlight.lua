@@ -1,22 +1,22 @@
 hexchat.register('extra-highlights', '1', 'Support highlights with spaces in them')
 
-local TAB_NAME = '(pings)'
-local TAB_NAME_CASES = '(cases)'
 local OPEN_PER_SERVER = true
-local EXTRA_HIGHLIGHTS = {
-    hexchat.get_info('nick'),
-    'dhill', 
-    'ping sbr%-stack',
-    'ping highrollers',
-    'ping highroller',
-    'ping vz%-eoss',
-    'ping sprint%-eoss',
-    'ping stack%-seg'
-}
-local EXTRA_HIGHLIGHTS_CASES = {
-    'NEW COLLAB CASE.*Stack',
-    'NEW NCQ CASE.*Stack',
-    'NEW NNO CASE.*Stack'
+local tab_names = { 'pings', 'cases' }
+local highlights = {
+  pings = { 
+  hexchat.get_info('nick'),
+  'dhill', 
+  'ping sbr%-stack',
+  'ping highrollers',
+  'ping highroller',
+  'ping vz%-eoss',
+  'ping sprint%-eoss',
+  'ping stack%-seg',
+  }, cases =  {
+  'NEW COLLAB CASE.*Stack',
+  'NEW NCQ CASE.*Stack',
+  'NEW NNO CASE.*Stack',
+  }
 }
 
 local function find_highlighttab (message_type)
@@ -24,17 +24,17 @@ local function find_highlighttab (message_type)
   if OPEN_PER_SERVER then
     network = hexchat.get_info('network')
   end
-  local ctx = hexchat.find_context(network, message_type)
+  local ctx = hexchat.find_context(network, '(' .. message_type .. ')')
   if not ctx then
     if OPEN_PER_SERVER then
-      hexchat.command('query -nofocus ' .. message_type)
+      hexchat.command('query -nofocus (' .. message_type .. ')')
     else
       local newtofront = hexchat.prefs['gui_tab_newtofront']
       hexchat.command('set -quiet gui_tab_newtofront off')
-      hexchat.command('newserver -noconnect ' .. message_type)
+      hexchat.command('newserver -noconnect (' .. message_type .. ')')
       hexchat.command('set -quiet gui_tab_newtofront ' .. tostring(newtofront))
     end
-    return hexchat.find_context(network, message_type)
+    return hexchat.find_context(network, '(' .. message_type .. ')')
   end
 
   return ctx
@@ -49,24 +49,16 @@ local function on_message (args, event_type)
   elseif event_type == 'Channel Action Hilight' then
     format = '\00322%s\t\002\00318%s%s%s\015 %s'
   end
-  for _, str in ipairs(EXTRA_HIGHLIGHTS) do
-    if message:find(str) then
-      local highlight_context = find_highlighttab(TAB_NAME)
-      hexchat.emit_print(event_type, unpack(args))
-      hexchat.command('gui color 3')
-      highlight_context:print(string.format(format, channel, args[3] or '', args[4] or '', hexchat.strip(args[1]), args[2]))
-      highlight_context:command('gui color 3')
-      return hexchat.EAT_ALL
-    end
-  end
-  for _, str in ipairs(EXTRA_HIGHLIGHTS_CASES) do
-    if message:find(str) then
-      local highlight_context = find_highlighttab(TAB_NAME_CASES)
-      hexchat.emit_print(event_type, unpack(args))
-      hexchat.command('gui color 3')
-      highlight_context:print(string.format(format, channel, args[3] or '', args[4] or '', hexchat.strip(args[1]), args[2]))
-      highlight_context:command('gui color 3')
-      return hexchat.EAT_ALL
+  for _, tab_name in ipairs(tab_names) do
+    for _, str in ipairs(highlights[tab_name]) do
+      if message:find(str) then
+        local highlight_context = find_highlighttab(tab_name)
+        hexchat.emit_print(event_type, unpack(args))
+        hexchat.command('gui color 3')
+        highlight_context:print(string.format(format, channel, args[3] or '', args[4] or '', hexchat.strip(args[1]), args[2]))
+        highlight_context:command('gui color 3')
+        return hexchat.EAT_ALL
+      end
     end
   end
 end

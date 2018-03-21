@@ -20,25 +20,24 @@ local EXTRA_HIGHLIGHTS_CASES = {
 }
 
 local function find_highlighttab (message_type)
-	local network = nil
-	if OPEN_PER_SERVER then
-		network = hexchat.get_info('network')
-	end
-	local ctx = hexchat.find_context(network, message_type)
-	if not ctx then
-		if OPEN_PER_SERVER then
-			hexchat.command('query -nofocus ' .. message_type)
-		else
-			local newtofront = hexchat.prefs['gui_tab_newtofront']
-			hexchat.command('set -quiet gui_tab_newtofront off')
-			hexchat.command('newserver -noconnect ' .. message_type)
-			hexchat.command('set -quiet gui_tab_newtofront ' .. tostring(newtofront))
-		end
+  local network = nil
+  if OPEN_PER_SERVER then
+    network = hexchat.get_info('network')
+  end
+  local ctx = hexchat.find_context(network, message_type)
+  if not ctx then
+    if OPEN_PER_SERVER then
+      hexchat.command('query -nofocus ' .. message_type)
+    else
+      local newtofront = hexchat.prefs['gui_tab_newtofront']
+      hexchat.command('set -quiet gui_tab_newtofront off')
+      hexchat.command('newserver -noconnect ' .. message_type)
+      hexchat.command('set -quiet gui_tab_newtofront ' .. tostring(newtofront))
+    end
+    return hexchat.find_context(network, message_type)
+  end
 
-		return hexchat.find_context(network, message_type)
-	end
-
-	return ctx
+  return ctx
 end
 
 local function on_message (args, event_type)

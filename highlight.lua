@@ -41,38 +41,38 @@ local function find_highlighttab (message_type)
 end
 
 local function on_message (args, event_type)
-	  local channel = hexchat.get_info('channel')
-    local message = args[2]
-	  local format
-	  if event_type == 'Channel Msg Hilight' then
-	  	format = '\00322%s\t\00318<%s%s%s>\015 %s'
-	  elseif event_type == 'Channel Action Hilight' then
-	  	format = '\00322%s\t\002\00318%s%s%s\015 %s'
-	  end
-    for _, str in ipairs(EXTRA_HIGHLIGHTS) do
-        if message:find(str) then
-	          local highlight_context = find_highlighttab(TAB_NAME)
-            hexchat.emit_print(event_type, unpack(args))
-            hexchat.command('gui color 3')
-	          highlight_context:print(string.format(format, channel, args[3] or '', args[4] or '', hexchat.strip(args[1]), args[2]))
-	          highlight_context:command('gui color 3')
-            return hexchat.EAT_ALL
-        end
+  local channel = hexchat.get_info('channel')
+  local message = args[2]
+  local format
+  if event_type == 'Channel Msg Hilight' then
+    format = '\00322%s\t\00318<%s%s%s>\015 %s'
+  elseif event_type == 'Channel Action Hilight' then
+    format = '\00322%s\t\002\00318%s%s%s\015 %s'
+  end
+  for _, str in ipairs(EXTRA_HIGHLIGHTS) do
+    if message:find(str) then
+      local highlight_context = find_highlighttab(TAB_NAME)
+      hexchat.emit_print(event_type, unpack(args))
+      hexchat.command('gui color 3')
+      highlight_context:print(string.format(format, channel, args[3] or '', args[4] or '', hexchat.strip(args[1]), args[2]))
+      highlight_context:command('gui color 3')
+      return hexchat.EAT_ALL
     end
-    for _, str in ipairs(EXTRA_HIGHLIGHTS_CASES) do
-        if message:find(str) then
-	          local highlight_context = find_highlighttab(TAB_NAME_CASES)
-            hexchat.emit_print(event_type, unpack(args))
-            hexchat.command('gui color 3')
-	          highlight_context:print(string.format(format, channel, args[3] or '', args[4] or '', hexchat.strip(args[1]), args[2]))
-	          highlight_context:command('gui color 3')
-            return hexchat.EAT_ALL
-        end
+  end
+  for _, str in ipairs(EXTRA_HIGHLIGHTS_CASES) do
+    if message:find(str) then
+      local highlight_context = find_highlighttab(TAB_NAME_CASES)
+      hexchat.emit_print(event_type, unpack(args))
+      hexchat.command('gui color 3')
+      highlight_context:print(string.format(format, channel, args[3] or '', args[4] or '', hexchat.strip(args[1]), args[2]))
+      highlight_context:command('gui color 3')
+      return hexchat.EAT_ALL
     end
+  end
 end
 
 for _, event in ipairs({{'Channel Action', 'Channel Action Hilight'}, {'Channel Message', 'Channel Msg Hilight'}}) do
-    hexchat.hook_print(event[1], function (args)
-        return on_message (args, event[2])
-    end, hexchat.PRI_HIGHEST)
+  hexchat.hook_print(event[1], function (args)
+  return on_message (args, event[2])
+  end, hexchat.PRI_HIGHEST)
 end

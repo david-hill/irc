@@ -3,15 +3,16 @@
 Summary:   A popular and easy to use graphical IRC (chat) client
 Name:      hexchat
 Version:   2.14.1
-Release:   2%{?dist}
+Release:   7%{?dist}
 Group:     Applications/Internet
 License:   GPLv2+
 URL:       https://hexchat.github.io
 Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}.tar.xz
 Patch1:    hexchat-2.12.4-disable-hilight-ng.patch
 
+BuildRequires: gcc
 BuildRequires: meson
-BuildRequires: desktop-file-utils, hicolor-icon-theme, sound-theme-freedesktop
+BuildRequires: hicolor-icon-theme
 BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(gtk+-2.0)
 BuildRequires: pkgconfig(dbus-glib-1)
@@ -22,14 +23,10 @@ BuildRequires: pkgconfig(iso-codes)
 BuildRequires: pkgconfig(openssl)
 BuildRequires: pkgconfig(python3)
 BuildRequires: pkgconfig(libpci)
-# Disable luajit on aarch64 for the time being due to issues
-# Upstream: https://github.com/hexchat/hexchat/issues/2116
-%ifarch %{arm} %{ix86} x86_64
-BuildRequires: pkgconfig(luajit)
-%else
 BuildRequires: pkgconfig(lua)
-%endif
 BuildRequires: perl-devel, perl-ExtUtils-Embed
+Requires:      (enchant or enchant2)
+Recommends:    sound-theme-freedesktop
 
 %description
 HexChat is an easy to use graphical IRC chat client for the X Window System.
@@ -48,29 +45,12 @@ This package contains the development files for %{name}.
 %autosetup -p1
 
 %build
-%ifarch %{arm} %{ix86} x86_64
-%meson
-%else
 %meson -Dwith-lua=lua
-%endif
 %meson_build
 
 %install
 %meson_install
-
 %find_lang %{name}
-
-%post
-/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-
-%postun
-if [ $1 -eq 0 ] ; then
-    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-%posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files -f %{name}.lang
 %{_bindir}/hexchat
@@ -95,10 +75,27 @@ fi
 %{_libdir}/pkgconfig/hexchat-plugin.pc
 
 %changelog
-* Tue Mar 20 2018 David Hill <dhill@redhat.com> 2.14.1-2
-- Version bump to 2.14.1
+* Sun Aug 05 2018 David Hill <dhill@redhat.com> - 2.14.1-7
+- Disable highlighting on own nickname.
 
-* Sat Mar 14 2018 Patrick Griffis <tingping@fedoraproject.org> 2.14.1-1
+* Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.14.1-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
+* Wed Jul 04 2018 Petr Pisar <ppisar@redhat.com> - 2.14.1-5
+- Perl 5.28 rebuild
+
+* Mon Jul 02 2018 Kevin Fenzi <kevin@scrye.com> - 2.14.1-4
+- Rebuild for python 3.7
+
+* Wed Jun 27 2018 Jitka Plesnikova <jplesnik@redhat.com> - 2.14.1-3
+- Perl 5.28 rebuild
+
+* Wed Mar 21 2018 Patrick Griffis <tingping@fedoraproject.org> 2.14.1-2
+- Always use lua over luajit, just more common
+- Remove no longer needed snippets
+- Add enchant/enchant2 to requires
+
+* Wed Mar 14 2018 Patrick Griffis <tingping@fedoraproject.org> 2.14.1-1
 - Version bump to 2.14.1
 
 * Sat Mar 10 2018 Patrick Griffis <tingping@fedoraproject.org> 2.14.0-1

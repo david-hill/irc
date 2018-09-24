@@ -2,9 +2,8 @@
 
 Summary:   A popular and easy to use graphical IRC (chat) client
 Name:      hexchat
-Version:   2.14.1
-Release:   7%{?dist}
-Group:     Applications/Internet
+Version:   2.14.2
+Release:   2%{?dist}
 License:   GPLv2+
 URL:       https://hexchat.github.io
 Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}.tar.xz
@@ -36,7 +35,6 @@ are possible.
 
 %package devel
 Summary: Development files for %{name}
-Group: Development/Libraries
 Requires: %{name}%{?_isa} = %{version}-%{release}
 %description devel
 This package contains the development files for %{name}.
@@ -75,8 +73,11 @@ This package contains the development files for %{name}.
 %{_libdir}/pkgconfig/hexchat-plugin.pc
 
 %changelog
-* Sun Aug 05 2018 David Hill <dhill@redhat.com> - 2.14.1-7
-- Disable highlighting on own nickname.
+* Mon Sep 24 2018 David Hill <dhill@redhat.com> - 2.14.2-2
+- Applying my fixes.
+
+* Thu Sep 06 2018 Gwyn Ciesla <limburgher@gmail.com> - 2.14.2-1
+- 2.14.2
 
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.14.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild

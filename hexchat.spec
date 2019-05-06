@@ -3,10 +3,15 @@
 Summary:   A popular and easy to use graphical IRC (chat) client
 Name:      hexchat
 Version:   2.14.2
-Release:   2%{?dist}
+Release:   4%{?dist}
 License:   GPLv2+
 URL:       https://hexchat.github.io
 Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}.tar.xz
+# https://github.com/hexchat/hexchat/issues/2237
+# https://bugzilla.redhat.com/show_bug.cgi?id=1632039
+# thanks ncoghlan for the fix
+# not upstreamed as there is no stable 2.14 branch to upstream it to
+Patch0:    0001-Python-plugin-Call-EndInterpreter-when-deinit-ing-th.patch
 Patch1:    hexchat-2.12.4-disable-hilight-ng.patch
 
 BuildRequires: gcc
@@ -73,8 +78,14 @@ This package contains the development files for %{name}.
 %{_libdir}/pkgconfig/hexchat-plugin.pc
 
 %changelog
-* Mon Sep 24 2018 David Hill <dhill@redhat.com> - 2.14.2-2
+* Mon May 06 2019 David Hill <dhill@redhat.com> - 2.14.2-4
 - Applying my fixes.
+
+* Tue Apr 30 2019 Adam Williamson <awilliam@redhat.com> - 2.14.2-3
+- Apply a fix suggested by ncoghlan for the crash-on-exit bug (#1632039)
+
+* Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.14.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
 * Thu Sep 06 2018 Gwyn Ciesla <limburgher@gmail.com> - 2.14.2-1
 - 2.14.2

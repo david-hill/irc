@@ -2,17 +2,13 @@
 
 Summary:   A popular and easy to use graphical IRC (chat) client
 Name:      hexchat
-Version:   2.14.2
-Release:   4%{?dist}
+Version:   2.14.3
+Release:   3%{?dist}
 License:   GPLv2+
 URL:       https://hexchat.github.io
 Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}.tar.xz
-# https://github.com/hexchat/hexchat/issues/2237
-# https://bugzilla.redhat.com/show_bug.cgi?id=1632039
-# thanks ncoghlan for the fix
-# not upstreamed as there is no stable 2.14 branch to upstream it to
-Patch0:    0001-Python-plugin-Call-EndInterpreter-when-deinit-ing-th.patch
-Patch1:    hexchat-2.12.4-disable-hilight-ng.patch
+Patch0:    hexchat-2.12.4-disable-hilight-ng.patch
+
 
 BuildRequires: gcc
 BuildRequires: meson
@@ -78,8 +74,23 @@ This package contains the development files for %{name}.
 %{_libdir}/pkgconfig/hexchat-plugin.pc
 
 %changelog
-* Mon May 06 2019 David Hill <dhill@redhat.com> - 2.14.2-4
-- Applying my fixes.
+* Thu Feb 27 2020 David Hill <dhill@redhat.com> - 2.14.3-3
+- Applying my patch over the new code.
+
+* Wed Jan 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.14.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
+* Tue Jan 07 2020 Kevin Fenzi <kevin@scrye.com> - 2.14.3-1
+- Update to 2.14.3.
+
+* Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 2.14.2-6
+- Rebuilt for Python 3.8
+
+* Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.14.2-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
+* Thu May 30 2019 Jitka Plesnikova <jplesnik@redhat.com> - 2.14.2-4
+- Perl 5.30 rebuild
 
 * Tue Apr 30 2019 Adam Williamson <awilliam@redhat.com> - 2.14.2-3
 - Apply a fix suggested by ncoghlan for the crash-on-exit bug (#1632039)

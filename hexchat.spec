@@ -3,12 +3,13 @@
 Summary:   A popular and easy to use graphical IRC (chat) client
 Name:      hexchat
 Version:   2.14.3
-Release:   3%{?dist}
+Release:   4%{?dist}
 License:   GPLv2+
 URL:       https://hexchat.github.io
 Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}.tar.xz
 Patch0:    hexchat-2.12.4-disable-hilight-ng.patch
-
+# Patch to link better to python 3.8
+Patch1:    https://github.com/hexchat/hexchat/commit/5deb69591992d4fede9090b60d3dc847612a4d60.patch
 
 BuildRequires: gcc
 BuildRequires: meson
@@ -74,8 +75,11 @@ This package contains the development files for %{name}.
 %{_libdir}/pkgconfig/hexchat-plugin.pc
 
 %changelog
-* Thu Feb 27 2020 David Hill <dhill@redhat.com> - 2.14.3-3
+* Wed Apr 29 2020 David Hill <dhill@redhat.com> - 2.14.3-4
 - Applying my patch over the new code.
+
+* Fri Mar 27 2020 Kevin Fenzi <kevin@scrye.com> - 2.14.3-3
+- Add patch to link better against python3.8. Fixes #1817862
 
 * Wed Jan 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.14.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild

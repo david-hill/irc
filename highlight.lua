@@ -40,6 +40,13 @@ local function find_highlighttab (message_type)
   return ctx
 end
 
+function unpack (t, i)
+  i = i or 1
+  if t[i] ~= nil then
+    return t[i], unpack(t, i + 1)
+  end
+end
+
 local function on_message (args, event_type)
   local channel = hexchat.get_info('channel')
   local message = args[2]

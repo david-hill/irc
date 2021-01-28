@@ -1,7 +1,7 @@
 hexchat.register('extra-highlights', '1', 'Support highlights with spaces in them')
 
 local OPEN_PER_SERVER = true
-local tab_names = { 'pings', 'cases', 'collabs', 'breached', 'breaching' }
+local tab_names = { 'pings', 'cases', 'collabs', 'breached', 'breaching', 'rme', 'fts' }
 local highlights = {
   pings = { 
   hexchat.get_info('nick'),
@@ -19,6 +19,10 @@ local highlights = {
   'CASE BREACHED',
   }, breaching = {
   'CASE BREACHING SOON',
+  }, rme =  {
+  'NEW RME CASE.*Stack',
+  }, fts =  {
+  'NEW FTS CASE.*Stack',
   }, collabs = {
   'NEW COLLAB CASE.*Stack',
   }

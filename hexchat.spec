@@ -3,7 +3,7 @@
 Summary:   A popular and easy to use graphical IRC (chat) client
 Name:      hexchat
 Version:   2.14.3
-Release:   7%{?dist}
+Release:   11%{?dist}
 License:   GPLv2+
 URL:       https://hexchat.github.io
 Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}.tar.xz
@@ -11,6 +11,7 @@ Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}.tar.xz
 # Patch to link better to python 3.8
 Patch0:    hexchat-2.12.4-disable-hilight-ng.patch
 Patch1:    https://github.com/hexchat/hexchat/commit/5deb69591992d4fede9090b60d3dc847612a4d60.patch
+Patch2:    python-plugin-from-master.patch
 
 BuildRequires: gcc
 BuildRequires: meson
@@ -27,6 +28,8 @@ BuildRequires: pkgconfig(python3)
 BuildRequires: pkgconfig(libpci)
 BuildRequires: pkgconfig(lua)
 BuildRequires: perl-devel, perl-ExtUtils-Embed
+BuildRequires: python3-cffi
+Requires:      python3-cffi
 Requires:      (enchant or enchant2)
 Recommends:    sound-theme-freedesktop
 
@@ -65,6 +68,7 @@ This package contains the development files for %{name}.
 %{_libdir}/hexchat/plugins/sysinfo.so
 %{_libdir}/hexchat/plugins/perl.so
 %{_libdir}/hexchat/plugins/python.so
+%{_libdir}/hexchat/python
 %{_datadir}/applications/%{app_id}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.*
 %{_datadir}/metainfo/%{app_id}.appdata.xml
@@ -76,8 +80,20 @@ This package contains the development files for %{name}.
 %{_libdir}/pkgconfig/hexchat-plugin.pc
 
 %changelog
-* Tue Sep 15 2020 Dave Hill <dhill@redhat.com> - 2.14.3-7
-- Rebuilt with my patch.
+* Thu Feb 4 2021 David Hill <dhill@redhat.com> - 2.14.3-11
+- Applying my patch over the new code.
+
+* Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.14.3-10
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
+* Fri Jan 15 2021 Kevin Fenzi <kevin@scrye.com> - 2.14.3-9
+- Fix typo in last commit
+
+* Fri Jan 15 2021 Kevin Fenzi <kevin@scrye.com> - 2.14.3-8
+- Add missing dependency on cffi. Fixes rhbz#1914874
+
+* Wed Dec 30 2020 Kevin Fenzi <kevin@scrye.com> - 2.14.3-7
+- Backport new python plugin from devel upstream. RHBZ#1883982
 
 * Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.14.3-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild

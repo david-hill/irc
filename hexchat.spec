@@ -3,7 +3,7 @@
 Summary:   A popular and easy to use graphical IRC (chat) client
 Name:      hexchat
 Version:   2.14.3
-Release:   11%{?dist}
+Release:   13%{?dist}
 License:   GPLv2+
 URL:       https://hexchat.github.io
 Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}.tar.xz
@@ -12,6 +12,8 @@ Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}.tar.xz
 Patch0:    hexchat-2.12.4-disable-hilight-ng.patch
 Patch1:    https://github.com/hexchat/hexchat/commit/5deb69591992d4fede9090b60d3dc847612a4d60.patch
 Patch2:    python-plugin-from-master.patch
+Patch3:    https://github.com/hexchat/hexchat/commit/163608d7fd861c2c4911a38f45be484c88626bdc.patch
+Patch4:    https://github.com/hexchat/hexchat/commit/090fd29acf4af0d8e13fcf2861b14a356db72641.patch
 
 BuildRequires: gcc
 BuildRequires: meson
@@ -80,8 +82,14 @@ This package contains the development files for %{name}.
 %{_libdir}/pkgconfig/hexchat-plugin.pc
 
 %changelog
-* Thu Feb 4 2021 David Hill <dhill@redhat.com> - 2.14.3-11
-- Applying my patch over the new code.
+* Sun Mar 14 2021 Davei Hill <dhill@redhat.com> - 2.14.3-13
+- Rebuild with my notification patch.
+
+* Fri Mar 12 2021 Kevin Fenzi <kevin@scrye.com> - 2.14.3-12
+- Add patch to fix exception in python3 plugin.
+
+* Sat Feb 06 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 2.14.3-11
+- Include patch to fix underscore not being printed correctly
 
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.14.3-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild

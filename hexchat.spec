@@ -3,7 +3,7 @@
 Summary:   A popular and easy to use graphical IRC (chat) client
 Name:      hexchat
 Version:   2.14.3
-Release:   13%{?dist}
+Release:   17%{?dist}
 License:   GPLv2+
 URL:       https://hexchat.github.io
 Source:    https://dl.hexchat.net/hexchat/%{name}-%{version}.tar.xz
@@ -14,6 +14,11 @@ Patch1:    https://github.com/hexchat/hexchat/commit/5deb69591992d4fede9090b60d3
 Patch2:    python-plugin-from-master.patch
 Patch3:    https://github.com/hexchat/hexchat/commit/163608d7fd861c2c4911a38f45be484c88626bdc.patch
 Patch4:    https://github.com/hexchat/hexchat/commit/090fd29acf4af0d8e13fcf2861b14a356db72641.patch
+# Fix lua plugin to not segfault with lua 5.4.3
+Patch5:    https://github.com/hexchat/hexchat/commit/90c91d6c9aa048eff8f8f8f888d37a21fd714522.patch
+# Move from freenode to Libera.chat
+Patch6:    https://patch-diff.githubusercontent.com/raw/hexchat/hexchat/pull/2566.patch
+Patch7:    https://github.com/hexchat/hexchat/commit/d3545f37cd5f551ed8bc0ab7b20e5c8140adc0a6.patch
 
 BuildRequires: gcc
 BuildRequires: meson
@@ -82,8 +87,20 @@ This package contains the development files for %{name}.
 %{_libdir}/pkgconfig/hexchat-plugin.pc
 
 %changelog
-* Sun Mar 14 2021 Davei Hill <dhill@redhat.com> - 2.14.3-13
+* Wed Jun 16 2021 David Hill <dhill@redhat.com> - 2.14.3-17
 - Rebuild with my notification patch.
+
+* Fri Jun 04 2021 Python Maint <python-maint@redhat.com> - 2.14.3-16
+- Rebuilt for Python 3.10
+
+* Fri May 28 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 2.14.3-15
+- Patch to include Libera.chat and patch to make it default as Fedora officialy moved from freenode
+
+* Fri May 21 2021 Jitka Plesnikova <jplesnik@redhat.com> - 2.14.3-14
+- Perl 5.34 rebuild
+
+* Thu Apr 15 2021 Tom Callaway <spot@fedoraproject.org> - 2.14.3-13
+- fix lua plugin segfault with lua 5.4.3
 
 * Fri Mar 12 2021 Kevin Fenzi <kevin@scrye.com> - 2.14.3-12
 - Add patch to fix exception in python3 plugin.
